@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  mongo0:
+    image: mongo:latest
+    hostname: mongo0
+    restart: always
+    container_name: mongo0
+    ports:
+      - 27017:27017
+    depends_on:
+      - mongo1
+    links:
+      - mongo1
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - ./scripts:/scripts
+
+  mongo1:
+    image: mongo:latest
+    hostname: mongo1
+    restart: always
+    container_name: mongo1
+    ports:
+      - 27018:27017
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - ./scripts:/scripts
+
+  # Load data from data_seed into MongoDB
+  mongo-seed:
+      container_name: mongo-seed
+      build:
+          context: ./data_seed
+          dockerfile: Dockerfile
+          args:
+              - DATABASE_URI=mongodb://mongo0:27017/?replicaSet=rs0&readPreference=primary
+      depends_on:
+          - mongo0
+
+  typesense:
+    image: typesense/typesense:0.24.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    environment:
+      TYPESENSE_API_KEY: xyz
+      TYPESENSE_DATA_DIR: /data
+    command: '--data-dir /data --api-key=xyz --enable-cors'
+    volumes:
+      - ./data:/data

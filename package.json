@@ -1,0 +1,26 @@
+{
+  "name": "typesense-mongodb",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "start:local": "ts-node src/index.ts --watch",
+    "start:docker": "bash ./scripts/init.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/mongodb": "^3.6.0",
+    "@types/node": "^14.14.10",
+    "express": "^4.18.2",
+    "mongoose": "^7.2.2",
+    "typescript": "^5.0.4",
+    "typesense": "^1.5.4"
+  },
+  "files": [
+    "lib"
+  ],
+  "private": true,
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
