@@ -21,6 +21,7 @@
   ],
   "private": true,
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "ts-node": "^10.9.1"
   }
 }

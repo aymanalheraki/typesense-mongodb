@@ -19,7 +19,7 @@ export async function search(
 ) {
 	try {
 		const searchResults = await typesense
-			.collections("falak")
+			.collections(config.collectionName)
 			.documents()
 			.search(searchParameters);
 
@@ -41,7 +41,7 @@ export async function createCollection(client: MongoClient) {
 			`Creating collection ${schema.name} with the following schema:\n${schema.name}`
 		);
 
-		const exists = await typesense.collections(schema.name).exists();
+		const exists = await typesense.collections(config.collectionName).exists();
 
 		if (!exists) {
 			await typesense.collections().create(schema);
@@ -51,7 +51,7 @@ export async function createCollection(client: MongoClient) {
 		let processed = 0;
 
 		const batchSize = 10000;
-		const collection = client.db(schema.name).collection(config.collectionName);
+		const collection = client.db('falak').collection(config.collectionName);
 		const count = await collection.countDocuments(undefined, {
 			readPreference: "primaryPreferred",
 		});
@@ -82,7 +82,7 @@ export async function createCollection(client: MongoClient) {
 
 			try {
 				await typesense
-					.collections(schema.name)
+					.collections(config.collectionName)
 					.documents()
 					.import(typesenseDocuments, {
 						action: "create",
@@ -96,10 +96,10 @@ export async function createCollection(client: MongoClient) {
 				continue;
 			}
 
+			processed += batchSize;
+
 			console.log(`Processed ${processed} documents, moving to next batch...`);
 			console.log(`${((processed / count) * 100).toPrecision(2)}% completed`);
-
-			processed += batchSize;
 		}
 	} catch (e) {
 		const error = e as TypesenseError;

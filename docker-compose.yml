@@ -27,16 +27,16 @@ services:
     volumes:
       - ./scripts:/scripts
 
-  # Load data from data_seed into MongoDB
-  mongo-seed:
-      container_name: mongo-seed
-      build:
-          context: ./data_seed
-          dockerfile: Dockerfile
-          args:
-              - DATABASE_URI=mongodb://mongo0:27017/?replicaSet=rs0&readPreference=primary
-      depends_on:
-          - mongo0
+#  Load data from data_seed into MongoDB
+  # mongo-seed:
+  #     container_name: mongo-seed
+  #     build:
+  #         context: ./data_seed
+  #         dockerfile: Dockerfile
+  #         args:
+  #             - DATABASE_URI=mongodb://mongo0:27017/?replicaSet=rs0&readPreference=primary
+  #     depends_on:
+  #         - mongo0
 
   typesense:
     image: typesense/typesense:0.24.0

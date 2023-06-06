@@ -4,7 +4,7 @@ import { CollectionCreateSchema } from "typesense/lib/Typesense/Collections";
 export class BlogCollectionSchema implements CollectionCreateSchema {
 	constructor() {
 		// The name of the collection.
-		this.name = "falak";
+		this.name = "corpus";
 
 		// The fields that we want to index in the collection.
 		this.fields = Blog.fieldsSchema();

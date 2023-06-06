@@ -7,7 +7,7 @@ const client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0", {
 });
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Parse JSON bodies for this app.
 app.use(express.json());
@@ -62,7 +62,7 @@ function closeChangeStream(timeInMs = 60000, changeStream: any) {
 }
 
 async function main() {
-	// await createCollection(client);
+	//await createCollection(client);
 
 	try {
 		console.log("Connecting to MongoDB");
